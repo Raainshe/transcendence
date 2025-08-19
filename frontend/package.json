@@ -1,0 +1,17 @@
+{
+  "name": "transcendence-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for ft_transcendence - Pong Tournament Platform",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["pong", "tournament", "typescript", "42"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

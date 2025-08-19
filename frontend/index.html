@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ft_transcendence - Pong Tournament</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>ft_transcendence</h1>
+            <p>The Ultimate Pong Tournament Platform</p>
+        </header>
+        
+        <main>
+            <div class="container">
+                <div class="auth-section">
+                    <h2>Welcome to Pong!</h2>
+                    <p>Register or login to start playing tournaments</p>
+                    
+                    <div class="auth-forms">
+                        <div class="form-container">
+                            <h3>Login</h3>
+                            <form id="loginForm">
+                                <input type="text" id="loginAlias" placeholder="Enter your alias" required>
+                                <button type="submit">Login</button>
+                            </form>
+                        </div>
+                        
+                        <div class="form-container">
+                            <h3>Register</h3>
+                            <form id="registerForm">
+                                <input type="text" id="registerAlias" placeholder="Choose an alias" required>
+                                <button type="submit">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-section" style="display: none;">
+                    <h2>Tournament Dashboard</h2>
+                    <div id="gameArea">
+                        <p>Game area will be loaded here</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="src/main.js"></script>
+</body>
+</html>

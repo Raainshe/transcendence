@@ -1,0 +1,152 @@
+Okay great. So I want to set up my project right now. The things I wanna start with is creating a basic landing page that allows registering and loging in using the constraints. Can you just list the technologies I can use how to install them in the project.EditBased on your ft_transcendence project requirements, here are the technologies you can use for a basic landing page with registration and login:
+Required Technologies
+Frontend:
+
+TypeScript (mandatory base code)
+HTML/CSS (for the landing page)
+Docker (mandatory - everything must run in containers)
+
+Backend Options:
+Option 1 (Mandatory):
+
+Pure PHP (no frameworks)
+
+Option 2 (Framework Module):
+
+Fastify with Node.js (requires taking the backend framework major module)
+
+Database Options:
+Option 1: No database (users enter aliases manually)
+Option 2: SQLite (requires taking the database minor module)
+Security Requirements:
+
+HTTPS (mandatory for all connections)
+Password hashing (if using database)
+Form validation (client-side or server-side)
+
+Installation Setup
+Project Structure:
+ft_transcendence/
+├── docker-compose.yml
+├── Dockerfile
+├── frontend/
+│   ├── index.html
+│   ├── src/
+│   │   └── main.ts
+│   └── styles/
+│       └── main.css
+├── backend/          # PHP or Node.js
+└── .env             # For secrets (git ignored)
+
+Docker Setup:
+
+Use docker-compose.yml to orchestrate your containers
+Everything must launch with a single command
+Consider rootless mode constraints if on campus
+
+TypeScript Setup:
+npm install -g typescript
+# or in project:
+npm install typescript --save-dev
+
+Recommendations:
+
+Start simple: Use mandatory requirements (TypeScript frontend + PHP backend) first
+Add modules later: Once basic functionality works, add Fastify and SQLite modules
+Single-page application: Ensure browser back/forward buttons work
+Firefox compatibility: Test primarily in latest Firefox
+
+Module Planning:
+If you take the framework and database modules, that's 1.5 modules toward your required 7 major modules (database is minor = 0.5).
+Would you like me to help you create the initial Docker setup or TypeScript configuration?
+
+I want to use fastify. How do I install it?
+Edit
+
+Since you want to use Fastify, you'll be taking the "Major module: Use a framework to build the backend" which requires Fastify with Node.js.
+Installation Steps:
+1. Initialize Node.js Project
+
+# In your backend directory
+npm init -y
+
+2. Install Fastify
+
+npm install fastify
+
+3. Install TypeScript Support (recommended)
+
+npm install typescript @types/node --save-dev
+npm install @fastify/type-provider-typebox --save-dev
+
+Basic Project Structure
+
+ft_transcendence/
+├── docker-compose.yml
+├── frontend/
+│   ├── index.html
+│   └── src/
+│       └── main.ts
+├── backend/
+│   ├── package.json
+│   ├── src/
+│   │   └── server.ts (or server.js)
+│   └── tsconfig.json
+└── .env
+
+. Basic Fastify Server Example
+
+// backend/src/server.ts
+import Fastify from 'fastify'
+
+const server = Fastify({
+  logger: true
+})
+
+// Declare a route
+server.get('/', async (request, reply) => {
+  return { hello: 'world' }
+})
+
+// Run the server
+const start = async () => {
+  try {
+    await server.listen({ port: 3000, host: '0.0.0.0' })
+  } catch (err) {
+    server.log.error(err)
+    process.exit(1)
+  }
+}
+start()
+
+6. TypeScript Configuration
+// backend/tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true
+  }
+}
+
+7. Package.json Scripts
+
+{
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsc && node dist/server.js"
+  }
+}
+
+Remember:
+
+This counts as 1 major module toward your required 7
+You must use Fastify specifically (not Express or other frameworks)
+You'll need to integrate this with Docker for the final setup
+Consider adding the SQLite database module for user registration/login
+
+Would you like help setting up the Docker configuration next?

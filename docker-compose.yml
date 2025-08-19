@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Main application service
+  transcendence:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: transcendence_app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    volumes:
+      # Mount frontend files for development (can be removed in production)
+      - ./frontend:/app/frontend:ro
+    restart: unless-stopped
+    networks:
+      - transcendence_network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Reverse proxy for HTTPS (nginx)
+  nginx:
+    image: nginx:alpine
+    container_name: transcendence_nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./frontend:/usr/share/nginx/html/frontend:ro
+    depends_on:
+      - transcendence
+    restart: unless-stopped
+    networks:
+      - transcendence_network
+
+networks:
+  transcendence_network:
+    driver: bridge
+    name: transcendence_net
+
+volumes:
+  # For potential database data persistence
+  db_data:
+    driver: local

@@ -1,121 +1,99 @@
+"use strict";
 // Frontend TypeScript entry point for ft_transcendence
-
-interface User {
-    alias: string;
-    id?: string;
-}
-
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TranscendenceApp = void 0;
 class TranscendenceApp {
-    private currentUser: User | null = null;
-    private apiBaseUrl = '/api';
-
     constructor() {
+        this.currentUser = null;
+        this.apiBaseUrl = '/api';
         this.initializeApp();
     }
-
-    private initializeApp(): void {
+    initializeApp() {
         console.log('Initializing ft_transcendence application...');
         this.setupEventListeners();
         this.checkAuthStatus();
     }
-
-    private setupEventListeners(): void {
-        const loginForm = document.getElementById('loginForm') as HTMLFormElement;
-        const registerForm = document.getElementById('registerForm') as HTMLFormElement;
-
+    setupEventListeners() {
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => this.handleLogin(e));
         }
-
         if (registerForm) {
             registerForm.addEventListener('submit', (e) => this.handleRegister(e));
         }
-
         // Handle browser back/forward buttons (SPA requirement)
         window.addEventListener('popstate', (e) => this.handlePopState(e));
     }
-
-    private async handleLogin(event: Event): Promise<void> {
+    async handleLogin(event) {
         event.preventDefault();
-        
-        const form = event.target as HTMLFormElement;
-        const aliasInput = form.querySelector('#loginAlias') as HTMLInputElement;
+        const form = event.target;
+        const aliasInput = form.querySelector('#loginAlias');
         const alias = aliasInput.value.trim();
-
         if (!alias) {
             this.showError('Please enter an alias');
             return;
         }
-
         try {
             // For now, simulate login - will be replaced with actual API call
             console.log('Login attempt:', alias);
             await this.simulateApiCall();
-            
             this.currentUser = { alias };
             this.showGameSection();
             this.updateUrl('/game');
-            
-        } catch (error) {
+        }
+        catch (error) {
             this.showError('Login failed. Please try again.');
             console.error('Login error:', error);
         }
     }
-
-    private async handleRegister(event: Event): Promise<void> {
+    async handleRegister(event) {
         event.preventDefault();
-        
-        const form = event.target as HTMLFormElement;
-        const aliasInput = form.querySelector('#registerAlias') as HTMLInputElement;
+        const form = event.target;
+        const aliasInput = form.querySelector('#registerAlias');
         const alias = aliasInput.value.trim();
-
         if (!alias) {
             this.showError('Please enter an alias');
             return;
         }
-
         try {
             // For now, simulate registration - will be replaced with actual API call
             console.log('Registration attempt:', alias);
             await this.simulateApiCall();
-            
             this.currentUser = { alias };
             this.showGameSection();
             this.updateUrl('/game');
-            
-        } catch (error) {
+        }
+        catch (error) {
             this.showError('Registration failed. Please try again.');
             console.error('Registration error:', error);
         }
     }
-
-    private async simulateApiCall(): Promise<void> {
+    async simulateApiCall() {
         // Simulate network delay
         return new Promise((resolve) => {
             setTimeout(resolve, 500);
         });
     }
-
-    private showGameSection(): void {
-        const authSection = document.querySelector('.auth-section') as HTMLElement;
-        const gameSection = document.querySelector('.game-section') as HTMLElement;
-
-        if (authSection) authSection.style.display = 'none';
+    showGameSection() {
+        const authSection = document.querySelector('.auth-section');
+        const gameSection = document.querySelector('.game-section');
+        if (authSection)
+            authSection.style.display = 'none';
         if (gameSection) {
             gameSection.style.display = 'block';
             this.updateGameArea();
         }
     }
-
-    private showAuthSection(): void {
-        const authSection = document.querySelector('.auth-section') as HTMLElement;
-        const gameSection = document.querySelector('.game-section') as HTMLElement;
-
-        if (authSection) authSection.style.display = 'block';
-        if (gameSection) gameSection.style.display = 'none';
+    showAuthSection() {
+        const authSection = document.querySelector('.auth-section');
+        const gameSection = document.querySelector('.game-section');
+        if (authSection)
+            authSection.style.display = 'block';
+        if (gameSection)
+            gameSection.style.display = 'none';
     }
-
-    private updateGameArea(): void {
+    updateGameArea() {
         const gameArea = document.getElementById('gameArea');
         if (gameArea && this.currentUser) {
             gameArea.innerHTML = `
@@ -125,50 +103,43 @@ class TranscendenceApp {
             `;
         }
     }
-
-    private checkAuthStatus(): void {
+    checkAuthStatus() {
         // Check if user should be in game mode based on URL
         const path = window.location.pathname;
         if (path === '/game' && this.currentUser) {
             this.showGameSection();
-        } else {
+        }
+        else {
             this.showAuthSection();
         }
     }
-
-    private handlePopState(event: PopStateEvent): void {
+    handlePopState(event) {
         // Handle browser back/forward buttons
         const path = window.location.pathname;
-        
         if (path === '/game' && this.currentUser) {
             this.showGameSection();
-        } else {
+        }
+        else {
             this.showAuthSection();
             this.updateUrl('/');
         }
     }
-
-    private updateUrl(path: string): void {
+    updateUrl(path) {
         // Update URL without page reload (SPA requirement)
         window.history.pushState({}, '', path);
     }
-
-    private showError(message: string): void {
+    showError(message) {
         // Simple error display - could be enhanced with better UI
         alert(message);
     }
-
-    public logout(): void {
+    logout() {
         this.currentUser = null;
         this.showAuthSection();
         this.updateUrl('/');
     }
 }
-
+exports.TranscendenceApp = TranscendenceApp;
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    (window as any).app = new TranscendenceApp();
+    window.app = new TranscendenceApp();
 });
-
-// Export for potential module usage
-export { TranscendenceApp };
